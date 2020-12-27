@@ -58,11 +58,15 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
+
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
+
         <?= $content ?>
+
+       
     </div>
 </div>
 
@@ -73,6 +77,9 @@ AppAsset::register($this);
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
+<?=$model->user_id?>
+<?=$model->firstname?>
+<?=$model->lastname?>
 
 <?php $this->endBody() ?>
 </body>

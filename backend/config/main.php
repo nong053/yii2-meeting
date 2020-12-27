@@ -67,6 +67,7 @@ return [
              'pathMap' => [
                 '@app/views' => '@backend/themes/adminlte'
              ],
+              'baseUrl' => '@web/../themes/adminlte',
          ],
         ],
     ],

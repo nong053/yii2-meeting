@@ -14,6 +14,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -36,18 +39,23 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                'module/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'restmeeting']
             ],
         ],
-        */
+        
         'urlManagerBackend' => [
             'class' => 'yii\web\urlManager',
-            'baseUrl' => '/advanced/backend/web',
-            'scriptUrl'=>'/advanced/backend/web/index.php',
+            'baseUrl' => '/yii2-meeting/backend/web',
+            'scriptUrl'=>'/yii2-meeting/backend/web/index.php',
             'enablePrettyUrl' => false,
             'showScriptName' => true,
      ],

@@ -18,6 +18,4 @@ $this->title = 'ระบบจองห้องประชุม';
 
          <p><a class="btn btn-lg btn-success" href="./index.php?r=meeting/meeting/create">จองห้องประชุม</a></p>
     </div>
-
-
 </div>

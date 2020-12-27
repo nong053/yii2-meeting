@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-    <?=Html::img('uploads/person/'.$model->photo, ['class'=>'thumbnail', 'width'=>150]);?>
+    <?=Html::img('@web/uploads/person/'.$model->photo, ['class'=>'thumbnail', 'width'=>150]);?>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
