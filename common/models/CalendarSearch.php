@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Meeting;
+use common\models\Calendar;
 
 /**
- * MeetingSearch represents the model behind the search form of `common\models\Meeting`.
+ * CalendarSearch represents the model behind the search form of `common\models\Calendar`.
  */
-class MeetingSearch extends Meeting
+class CalendarSearch extends Calendar
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class MeetingSearch extends Meeting
     public function rules()
     {
         return [
-            [['id', 'room_id', 'user_id'], 'integer'],
-            [['title', 'description', 'date_start', 'date_end', 'created_at', 'updated_at', 'status'], 'safe'],
+            [['id', 'val'], 'integer'],
+            [['date'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class MeetingSearch extends Meeting
      */
     public function search($params)
     {
-        $query = Meeting::find();
+        $query = Calendar::find();
 
         // add conditions that should always apply here
 
@@ -59,18 +59,9 @@ class MeetingSearch extends Meeting
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'date_start' => $this->date_start,
-            'date_end' => $this->date_end,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'room_id' => $this->room_id,
-            'user_id' => $this->user_id,
+            'date' => $this->date,
+            'val' => $this->val,
         ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'status', $this->status]);
-            
 
         return $dataProvider;
     }

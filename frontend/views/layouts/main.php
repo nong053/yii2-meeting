@@ -40,6 +40,7 @@ AppAsset::register($this);
         ['label' => 'About', 'url' => ['/site/about']],
         ['label' => 'Contact', 'url' => ['/site/contact']],
         ['label' => 'Blog', 'url' => ['/blog']],
+        ['label' => 'Booking', 'url' => ['/meeting']],
         ['label' => 'Controller Panel', 'url' => Yii::$app->urlManagerBackend->getBaseUrl(),['target','_blank']],
     ];
     if (Yii::$app->user->isGuest) {

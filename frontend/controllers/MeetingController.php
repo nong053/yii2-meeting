@@ -1,25 +1,16 @@
 <?php
 
-namespace backend\modules\meeting\controllers;
+namespace frontend\controllers;
 
 use Yii;
 use common\models\Meeting;
-
-use common\models\User;
-
-use common\models\MeetingSearch;
+use frontend\models\meetingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
-use yii\filters\AccessControl;
-use common\components\AccessRule;
-
+use yii\data\ActiveDataProvider;
+//use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
-
-
-
-
 
 /**
  * MeetingController implements the CRUD actions for Meeting model.
@@ -39,39 +30,7 @@ class MeetingController extends Controller
                 ],
             ],
 
-            'access'=>[
-                'class'=>AccessControl::className(),
-                'only'=> ['index','create','update','view','delete'],
-                'ruleConfig'=>[
-                    'class'=>AccessRule::className()
-                ],
-                'rules'=>[
-                    [
-                        'actions'=>['index','create','view'],
-                        'allow'=> true,
-                        'roles'=>[
-                            User::ROLE_USER,
-                            User::ROLE_MODERATOR,
-                            User::ROLE_ADMIN
-
-                        ]
-                    ],
-                    [
-                        'actions'=>['update'],
-                        'allow'=> true,
-                        'roles'=>[
-                            User::ROLE_MODERATOR,
-                            User::ROLE_ADMIN
-                        ]
-                    ],
-                    [
-                        'actions'=>['delete'],
-                        'allow'=> true,
-                        'roles'=>[User::ROLE_ADMIN]
-                    ]
-                ]
-            ]
-
+            
         ];
     }
 
@@ -81,14 +40,39 @@ class MeetingController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new MeetingSearch();
+        $searchModel = new meetingSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+
+        // $modelMeetingByUser = (new \yii\db\Query())
+        // ->select(['*'])
+        // ->from('meeting')
+        // ->where(['user_id' => Yii::$app->user->identity->id])
+        // ->all();
+          
+            if(Yii::$app->user->isGuest){
+                $dataProviderByUser = new ActiveDataProvider([
+                    'query' => Meeting::find()->where(['user_id' => '0'])
+                 ]);
+               
+            }else{
+                  $dataProviderByUser = new ActiveDataProvider([
+                    'query' => Meeting::find()->where(['user_id' => Yii::$app->user->identity->id])  
+                 ]);
+
+            }
+
+      
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'dataProviderByUser'=>$dataProviderByUser,
         ]);
-    }
+
+       // var_dump($rows);
+     
+    }   
 
     /**
      * Displays a single Meeting model.
@@ -112,10 +96,14 @@ class MeetingController extends Controller
     {
         $model = new Meeting();
 
-        if ($model->load(Yii::$app->request->post())  ) {
+        if ($model->load(Yii::$app->request->post()) ) {
 
+            $model->user_id = Yii::$app->user->identity->id;
+            $model->status = 'Waiting';
+            
             $model->created_at = new Expression('NOW()');
             $model->updated_at = new Expression('NOW()');
+
             $model->save();
 
             return $this->redirect(['view', 'id' => $model->id]);
@@ -137,10 +125,11 @@ class MeetingController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) ) {
+        if ($model->load(Yii::$app->request->post())) {
 
             $model->updated_at = new Expression('NOW()');
             $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

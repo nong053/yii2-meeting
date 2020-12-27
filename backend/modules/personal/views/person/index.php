@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute'=>'photo',
                         'format'=>'html',
                         'value'=>function($model){
-                            return Html::img('uploads/person/'.$model->photo, ['class'=>'thumbnail', 'width'=>150]);
+                            return Html::img('@web/uploads/person/'.$model->photo, ['class'=>'thumbnail', 'width'=>150]);
                         }
                     ],
 

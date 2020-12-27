@@ -1,15 +1,15 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Meeting;
 
 /**
- * MeetingSearch represents the model behind the search form of `common\models\Meeting`.
+ * meetingSearch represents the model behind the search form of `common\models\Meeting`.
  */
-class MeetingSearch extends Meeting
+class meetingSearch extends Meeting
 {
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class MeetingSearch extends Meeting
      */
     public function search($params)
     {
-        $query = Meeting::find();
+        $query = Meeting::find()->where(['status' => 'Approved']);
 
         // add conditions that should always apply here
 
@@ -70,7 +70,6 @@ class MeetingSearch extends Meeting
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'status', $this->status]);
-            
 
         return $dataProvider;
     }

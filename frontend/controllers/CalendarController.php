@@ -1,30 +1,18 @@
 <?php
 
-namespace backend\modules\meeting\controllers;
+namespace frontend\controllers;
 
 use Yii;
-use common\models\Meeting;
-
-use common\models\User;
-
-use common\models\MeetingSearch;
+use common\models\Calendar;
+use common\models\CalendarSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-use yii\filters\AccessControl;
-use common\components\AccessRule;
-
-use yii\db\Expression;
-
-
-
-
-
 /**
- * MeetingController implements the CRUD actions for Meeting model.
+ * CalendarController implements the CRUD actions for Calendar model.
  */
-class MeetingController extends Controller
+class CalendarController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -38,50 +26,16 @@ class MeetingController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-
-            'access'=>[
-                'class'=>AccessControl::className(),
-                'only'=> ['index','create','update','view','delete'],
-                'ruleConfig'=>[
-                    'class'=>AccessRule::className()
-                ],
-                'rules'=>[
-                    [
-                        'actions'=>['index','create','view'],
-                        'allow'=> true,
-                        'roles'=>[
-                            User::ROLE_USER,
-                            User::ROLE_MODERATOR,
-                            User::ROLE_ADMIN
-
-                        ]
-                    ],
-                    [
-                        'actions'=>['update'],
-                        'allow'=> true,
-                        'roles'=>[
-                            User::ROLE_MODERATOR,
-                            User::ROLE_ADMIN
-                        ]
-                    ],
-                    [
-                        'actions'=>['delete'],
-                        'allow'=> true,
-                        'roles'=>[User::ROLE_ADMIN]
-                    ]
-                ]
-            ]
-
         ];
     }
 
     /**
-     * Lists all Meeting models.
+     * Lists all Calendar models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MeetingSearch();
+        $searchModel = new CalendarSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -91,7 +45,7 @@ class MeetingController extends Controller
     }
 
     /**
-     * Displays a single Meeting model.
+     * Displays a single Calendar model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -104,20 +58,15 @@ class MeetingController extends Controller
     }
 
     /**
-     * Creates a new Meeting model.
+     * Creates a new Calendar model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Meeting();
+        $model = new Calendar();
 
-        if ($model->load(Yii::$app->request->post())  ) {
-
-            $model->created_at = new Expression('NOW()');
-            $model->updated_at = new Expression('NOW()');
-            $model->save();
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -127,7 +76,7 @@ class MeetingController extends Controller
     }
 
     /**
-     * Updates an existing Meeting model.
+     * Updates an existing Calendar model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -137,10 +86,7 @@ class MeetingController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) ) {
-
-            $model->updated_at = new Expression('NOW()');
-            $model->save();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -150,7 +96,7 @@ class MeetingController extends Controller
     }
 
     /**
-     * Deletes an existing Meeting model.
+     * Deletes an existing Calendar model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -164,15 +110,15 @@ class MeetingController extends Controller
     }
 
     /**
-     * Finds the Meeting model based on its primary key value.
+     * Finds the Calendar model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Meeting the loaded model
+     * @return Calendar the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Meeting::findOne($id)) !== null) {
+        if (($model = Calendar::findOne($id)) !== null) {
             return $model;
         }
 
